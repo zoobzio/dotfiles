@@ -1,6 +1,6 @@
 # list folder contents
-if type -q exa
-  alias ll "exa -l -g --icons"
+if type -q eza
+  alias ll "eza -l -g --icons"
 end
 
 # size of directory

@@ -24,8 +24,6 @@ return {
 				sorting_strategy = "ascending",
 				layout_config = {
 					prompt_position = "top",
-					height = 0.5,
-					width = 0.6,
 				},
 			},
 			extensions = {
