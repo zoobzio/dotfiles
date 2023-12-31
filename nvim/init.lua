@@ -1,37 +1,21 @@
---[[
-    Author: Alexander Thorwaldson 
-    Email: alex@zoobz.io
-    Github: https://github.com/zoobzio
---]]
+require "core"
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable",
-		lazypath,
-	})
+local custom_init_path = vim.api.nvim_get_runtime_file("lua/custom/init.lua", false)[1]
+
+if custom_init_path then
+  dofile(custom_init_path)
 end
-vim.opt.rtp:prepend(lazypath)
-require("lazy").setup("plugins")
 
--- configure editor w/ shortcuts
-require("editor").setup({
-	{ mode = "n", expr = "<Leader>1", cmd = ":LualineBuffersJump 1<CR>" },
-	{ mode = "n", expr = "<Leader>2", cmd = ":LualineBuffersJump 2<CR>" },
-	{ mode = "n", expr = "<Leader>3", cmd = ":LualineBuffersJump 3<CR>" },
-	{ mode = "n", expr = "<Leader>4", cmd = ":LualineBuffersJump 4<CR>" },
-	{ mode = "n", expr = "<Leader>5", cmd = ":LualineBuffersJump 5<CR>" },
-	{ mode = "n", expr = "<Leader>6", cmd = ":LualineBuffersJump 6<CR>" },
-	{ mode = "n", expr = "<Leader>7", cmd = ":LualineBuffersJump 7<CR>" },
-	{ mode = "n", expr = "<Leader>8", cmd = ":LualineBuffersJump 8<CR>" },
-	{ mode = "n", expr = "<Leader>9", cmd = ":LualineBuffersJump 9<CR>" },
-	{ mode = "n", expr = "<Leader>q", cmd = ":bd<CR>" },
-	{ mode = "n", expr = "<Leader>=", cmd = ":tabnew<CR>" },
-	{ mode = "n", expr = "<Leader>-", cmd = ":tabclose<CR>" },
-	{ mode = "n", expr = "<Leader>[", cmd = ":tabprevious<CR>" },
-	{ mode = "n", expr = "<Leader>]", cmd = ":tabnext<CR>" },
-})
+require("core.utils").load_mappings()
+
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+
+-- bootstrap lazy.nvim!
+if not vim.loop.fs_stat(lazypath) then
+  require("core.bootstrap").gen_chadrc_template()
+  require("core.bootstrap").lazy(lazypath)
+end
+
+dofile(vim.g.base46_cache .. "defaults")
+vim.opt.rtp:prepend(lazypath)
+require "plugins"
